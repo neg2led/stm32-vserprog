@@ -122,8 +122,11 @@ uint32_t spi_setup(uint32_t speed_hz) {
    * ourselves this bit needs to be at least set to 1, otherwise the spi
    * peripheral will not send any data out.
    */
+#ifndef GD32F103
+  /* GD32F103 chip software slave management doesn't work with the method used in this app, fortunately HW does */
   spi_enable_software_slave_management(SPI1);
   spi_set_nss_high(SPI1);
+#endif /* GD32F103 */
 
   /* Misc. */
   spi_disable_crc(SPI1);
@@ -210,16 +213,14 @@ static void spi_dma_read(uint16_t len) {
 /* Old CPU copying code */
 static void spi_copy_to_usb(uint32_t len) {
   while (len) {
-    spi_send(SPI1, 0x00);
-    usbcdc_putc(spi_read(SPI1));
+    usbcdc_putc(spi_xfer(SPI1, 0x00));
     len --;
   }
 }
 
 static void spi_copy_from_usb(uint32_t len) {
   while (len) {
-    spi_send(SPI1, usbcdc_getc());
-    spi_read(SPI1);
+    spi_xfer(SPI1, usbcdc_getc());
     len --;
   }
 }

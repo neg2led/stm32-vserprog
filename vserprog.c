@@ -252,7 +252,8 @@ void handle_command(unsigned char command) {
 #define  RCC_GCFGR_ADCPS_BIT_2  (1UL << 28)
 #define  RCC_GCFGR_USBPS_DIV2   (3UL << 22)
 #define  RCC_GCFGR_PLLMF_BIT_4  (1UL << 27)
-#define	 RCC_CFGR_PLLMUL_PLL_CLK_MUL24	0x07
+/* GD32 extra PLL bit flip turns MUL9 (0b00111) into MUL24 (0b10111) */
+#define	 RCC_CFGR_PLLMUL_PLL_CLK_MUL24	RCC_CFGR_PLLMUL_PLL_CLK_MUL9
 
 static void rcc_clock_setup_in_hse_8mhz_out_96mhz(void) {
 	/* Enable internal high-speed oscillator. */
@@ -285,8 +286,8 @@ static void rcc_clock_setup_in_hse_8mhz_out_96mhz(void) {
 	 * 8MHz (external) * 24 (multiplier) / 2 (pllprediv) = 96MHz
 	 */
   /* GD32 extra PLL bit flip turns MUL9 (0b00111) into MUL24 (0b10111) */
+	rcc_set_pll_multiplication_factor(RCC_CFGR_PLLMUL_PLL_CLK_MUL24);
   RCC_CFGR |= RCC_GCFGR_PLLMF_BIT_4;
-	rcc_set_pll_multiplication_factor(RCC_CFGR_PLLMUL_PLL_CLK_MUL9);
 
 	/* Select HSE as PLL source. */
 	rcc_set_pll_source(RCC_CFGR_PLLSRC_HSE_CLK);
