@@ -1,5 +1,5 @@
 language: c
-dist: xenial
+dist: bionic
 addons:
   apt:
     packages:
@@ -8,6 +8,7 @@ addons:
 
 script:
   - for board in $(ls boards/*.h | cut -d/ -f2 | cut -d. -f1); do
+      echo "testbuild for board \"$board\"";
       make BOARD="$board" || return 1;
     done
   - make distclean
