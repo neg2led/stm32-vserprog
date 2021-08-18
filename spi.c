@@ -209,31 +209,6 @@ static void spi_dma_read(uint16_t len) {
   spi_enable_tx_dma(SPI1);
 }
 
-#ifdef GD32F103
-/* Old CPU copying code */
-static void spi_copy_to_usb(uint32_t len) {
-  while (len) {
-    usbcdc_putc(spi_xfer(SPI1, 0x00));
-    len --;
-  }
-}
-
-static void spi_copy_from_usb(uint32_t len) {
-  while (len) {
-    spi_xfer(SPI1, usbcdc_getc());
-    len --;
-  }
-}
-
-/* FIXME: Currently SPI does not work on GD32 under any clock... */
-void spi_bulk_read(uint32_t rlen) {
-  spi_copy_to_usb(rlen);
-}
-
-void spi_bulk_write(uint32_t slen) {
-  spi_copy_from_usb(slen);
-}
-#else
 void spi_bulk_read(uint32_t rlen) {
   while (likely(rlen >= USBCDC_PKT_SIZE_DAT)) {
     spi_dma_read(USBCDC_PKT_SIZE_DAT);
@@ -301,4 +276,3 @@ void spi_bulk_write(uint32_t slen) {
   /* Mark USB RX buffer as used. */
   usbcdc_get_remainder(&urbuf);
 }
-#endif /* GD32F103 */
