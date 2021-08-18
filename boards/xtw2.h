@@ -20,6 +20,8 @@
 #define BOARD_PIN_USB_PULLUP         GPIO8
 #define BOARD_USB_HIGH_IS_PULLUP     true
 
+#define GD32F103_8MHZ
+
 /*
  * The XTW2 is like the XTW100, but with a GD32F103 and a single pinout for both SPI and I2C.
  * The GD32F103 is mostly the same as an STM32F103, but its SPI peripherals can all do 18MHz officially,
