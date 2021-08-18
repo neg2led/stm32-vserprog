@@ -14,6 +14,7 @@
             "interface": "swd",
             "runToMain": true,
             "toolchainPrefix": "arm-none-eabi-",
+            "svdFile": "${workspaceRoot}/misc/GD32F10x_MD.svd",
             "gdbPath": "/usr/bin/arm-none-eabi-gdb",
             "preLaunchCommands": ["make BOARD=xtw2"]
         }

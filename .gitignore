@@ -61,6 +61,8 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,linux,windows
 
+# local misc
+misc/
 
 *~
 *.o
